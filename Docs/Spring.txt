@@ -1,0 +1,158 @@
+--1. Setup => Maven,  Eclipse, JDK 22
+
+=====================BASICS======================
+
+* pom file : similar to package.json : all info about project and its dependencies
+
+* mvn repository : similar to npm libraries
+
+
+=> 1. IOC =======================================
+
+=> Inversion of Control:
+
+1. Objects of Classes are accessed using Beans
+
+2. Beans are stored in containers
+
+3. Containers can be of 2 types : 
+    a. BeanFactory => only xml based
+    b. ApplicationContext => xml based and annotation based
+
+4. 
+    a. using xml => 
+    ** ApplicationContext = new ClassPathXmlAppicationContext("xmlfilepath");
+    ** xml file contains beans:
+    
+            <beans>
+                <bean id="sim" class="com.infosys.entity.Airtel"></bean>
+            </beans>
+
+
+    b. using annotation => 	
+    ** ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+    ** the appconfig class contains beans :
+            public class AppConfig {
+            @Bean
+            public Shape square() {
+                return new Square(5.0);
+            }
+            
+            @Bean
+            public Shape circle() {
+                return new Circle(10.0);
+            }
+        }
+
+
+
+
+
+********************************************************
+
+=> ANNOTATION BASED AUTOWIRING
+
+1. Simply use @Autowired annotation before the property that we need to autowire from other class
+    ex: 
+    i.e annotation by property type
+    public class Employee {
+	    private Integer empId;
+        private String empName;
+        @Autowired
+        private Address address;
+    }
+
+2. In setter based annotation we have to use the @Autowired tag before the setter function of setAddress() setter
+    ex:
+    @Autowired
+    public void setAddress(){
+        this.address = address;
+    }
+
+3. Using constructor
+    @Autowired
+    public Employee(){
+
+    }
+
+3. @Qualifier : If multiple beans refer to same class, then we use annotation to specify which bean we want to use.
+=>@Qualifer("bean_id")
+
+4. @Value : Used for giving overriding values even if there is any value passed for a particular setter method
+=> @Value("12") //always String
+    public void setAge(){
+
+    }
+
+5. @Component : Creates Component for a class inside the package which further helps for creating beans automatically
+=> @Component
+    public class Employee{
+
+    }
+
+6. @Scope : Scope of the Component created above 
+=> @Scope("prototype") //default -> singletoon
+
+7. @ComponentScan("com.package") : creates 
+
+8. @Primary : If 2 beans with same class/interface then the one defined with @Primary annotation would be prefered
+
+9. @Lazy(value=true): delays the execution/creation of a bean
+
+10. @ImportResource("classpath:/config.xml"): Imports XML based config into annotation java config
+
+
+    
+***********************************************************************************
+
+
+=> ASPECT ORIENTED PROGRAMMING
+
+1. Dependencies : spring-context, aspectjrt, spring-aop,spring-core, aspectjweaver
+
+
+***********************************************************************************
+
+=> SPRING JDBC 
+
+1. Dependencies : spring-jdbc, postgresql-jdbc-driver, lombok, dpcp2
+
+
+2. Folder Structure :
+
+
+    *** Main Package
+
+        ** Main.java => For implementing the CRUD operations on object of entity
+
+        ** Package.Model => Database schema representation
+            
+            * Entity.Java => POJO of the Entity class (Student, Employee, etc);
+            * EntityMapper.Java => Uses the RowMapper interface to map  row of the table in DB to an Java Object (ORM)
+
+        ** Package.DAO => Data Access Object. It communicates between Java Objects and Database
+
+            * EntityDAO.java => An Interface with all CRUD methods like displaay(), delete(), etc;
+            * EntityDAOImpl.java => Implementation of the interface. Its the main Business logic. Uses JdbcTemplate class to communicate with the DB
+
+        ** Package.Config => Database configs
+            * AppConfig.java => Datasource configs which manages connections, drivers, username, password, etc;
+                            Uses Datasource, JdbcTemplate classes;
+        
+
+
+3. Terms : 
+
+    a. RowMapper Class used to maps rows from db to Java app
+
+
+***********************************************************************************
+
+=> ORM : Object Relation Mapping 
+
+1. Terms
+
+    a. @Repository : Represents a POJO Class in persistence layer
+
+    b. @EntityManager : An instance to perform CRUD operations
+

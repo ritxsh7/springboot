@@ -1,0 +1,14 @@
+server:
+  port: 8082
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: microservice-gateway-1
+          uri: http://localhost:8080/
+          Predicates:
+            - Path=/demo1/**
+        - id: microservice-gateway-2
+          uri: http://localhost:8081/
+          Predicates:
+            - Path=/demo2/**

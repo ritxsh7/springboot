@@ -1,0 +1,13 @@
+server:
+  port:
+    8085
+spring:
+  application:
+    name: spring-eureka-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: spring-eureka-service
+          uri: http://localhost:8080/
+          Predicates:
+            - Path=/demo/**
